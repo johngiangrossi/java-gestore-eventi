@@ -53,6 +53,13 @@ public class Evento {
 
     }
 
+    public String getDataFormattata() {
+
+        DateTimeFormatter dataFormattata = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data.format(dataFormattata);
+
+    }
+    
     public int getNumPostiDisponibili() {
 
         return numPostiTotale - numPostiPrenotati;
@@ -88,7 +95,7 @@ public class Evento {
             throw new IllegalArgumentException("numero dei posti da prenotare deve essere maggiore di 0");
         }
         if (numPostiPrenotati > getNumPostiDisponibili()) {
-            throw new IllegalArgumentException("non ci sono più posti disponibili");
+            throw new IllegalArgumentException("non ci sono sufficienti posti disponibili");
         }
         if (data.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("hai inserito una data passata");
@@ -105,8 +112,8 @@ public class Evento {
         if (numPostiDisdire <= 0) {
             throw new IllegalArgumentException("il numero di posti da disdire deve essere maggiore di 0");
         }
-        if (numPostiPrenotati <= 0) {
-            throw new IllegalArgumentException("non ci sono più posti disponibili");
+        if (numPostiPrenotati == 0) {
+            throw new IllegalArgumentException("non ci sono prenotazioni attive");
         }
         if (numPostiDisdire > numPostiPrenotati) {
             throw new IllegalArgumentException("stai cercando di disdire più posti di quelli prenotati");
@@ -132,17 +139,15 @@ public class Evento {
 
         } else {
 
-            char inputUtenteChar = input.toLowerCase().charAt(0);
+            switch (input) {
 
-            switch (inputUtenteChar) {
-
-                case 'y' -> {
+                case "si" -> {
 
                     return true;
 
                 }
 
-                case 'n' -> {
+                case "no" -> {
 
                     return false;
 
@@ -162,8 +167,9 @@ public class Evento {
     @Override
     public String toString() {
 
-        DateTimeFormatter dataFormattata = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return "Evento [titolo=" + getTitolo() + ", data=" + getData().format(dataFormattata) + "]";
+        return "Evento [titolo=" + getTitolo() + ", data=" + getDataFormattata() + "]";
 
     }
+
+
 }
