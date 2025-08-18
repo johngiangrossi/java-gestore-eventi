@@ -7,12 +7,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Currency;
 import java.util.Locale;
 
+// // Creare una classe Concerto che estende Evento, che ha anche gli attributi : ora (LocalTime) , prezzo
 public class Concerto extends Evento {
 
+    // // che ha anche gli attributi : ora (LocalTime) , prezzo
     // fields
     private LocalTime ora;
     private BigDecimal prezzo;
 
+    // // Aggiungere questi attributi nel costruttore
     // costruttore
     public Concerto(LocalTime ora, BigDecimal prezzo, String titolo, LocalDate data, int numPostiTotale) {
         super(titolo, data, numPostiTotale);
@@ -27,11 +30,13 @@ public class Concerto extends Evento {
     }
     
 
+    // // e implementarne getter 
     // getters
     public LocalTime getOra() {
-        return ora;
-    }
+    return ora;
+}
 
+    // // Aggiungere i metodi per restituire ora formattata
     public String getOraFormattata() {
 
         DateTimeFormatter oraFormattata = DateTimeFormatter.ofPattern("HH:mm");
@@ -43,6 +48,7 @@ public class Concerto extends Evento {
         return prezzo;
     }
 
+    // // Aggiungere i metodi per restituire prezzo formattato (##,##€)
     public String getPrezzoFormattato() {
         
         Currency valuta = Currency.getInstance("EUR"); // codice ISO 4217
@@ -53,6 +59,7 @@ public class Concerto extends Evento {
     }
 
     
+    // // e implementarne setter
     // setters
     public void setOra(LocalTime ora) {
         if (ora == null) {
@@ -66,8 +73,11 @@ public class Concerto extends Evento {
             throw new IllegalArgumentException("hai inserito un prezzo non valido");
         }
         this.prezzo = prezzo;
-    } 
+    }
     
+    
+    // // Fare l’ override del metodo toString() in modo che venga restituita una stringa del tipo: data e ora formattata - titolo - prezzo formattato
+    // override
     @Override
     public String toString() {
         return "Concerto [data=" + super.getDataFormattata() + " ora=" + getOraFormattata() + ", titolo="

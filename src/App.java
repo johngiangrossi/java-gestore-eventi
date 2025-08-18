@@ -4,14 +4,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-//migliorare chiedere prima che tipo e poi creare oggetto giusto direttamente e rendere piu modulare e scalabile e unificare logica creazione evento/concerto
 
 public class App {
 
     private static final int MAX_TENTATIVI = 3;
+
+
+    // // Creare una classe Main di test, in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
     public static void main(String[] args) {
 
-        // ricevo informazioni dall'utente
+        // apro scanner
         Scanner scanner = new Scanner(System.in);
         boolean eventoCreato = false;
         Evento evento1 = null;
@@ -30,6 +32,7 @@ public class App {
 
                         boolean sceltaTipoValida = false;
 
+                        // faccio scegliere che tipo di evento vuole creare
                         for (int j = 0; j < MAX_TENTATIVI; j++) {
 
                             System.out.println("che tipo di evento vuoi creare?");
@@ -41,35 +44,36 @@ public class App {
 
                                 System.out.println("hai inserito valori errati, riprova");
 
-                            } else if (!sceltaUtenteTipo.equals("1") && !sceltaUtente.equals("2")) {
+                            } else if (!sceltaUtenteTipo.equals("1") && !sceltaUtenteTipo.equals("2")) {
 
                                 System.out.println("hai inserito valori errati, riprova");
 
                             } else {
 
+                                // // in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
                                 evento1 = creaEvento(scanner, sceltaUtenteTipo);
                                 System.out.println(evento1.toString());
                                 eventoCreato = true;
                                 sceltaTipoValida = true;
-                                i = MAX_TENTATIVI; 
+                                i = MAX_TENTATIVI;
                                 break;
 
                             }
                         }
-                        
+
                         if (evento1 == null) {
-                            
+
                             System.out.println("creazione fallita");
                             return;
 
                         }
-                        if (!sceltaTipoValida) { //aggiungere anche evento1==null??
+                        if (!sceltaTipoValida) {
 
                             System.out.println("hai superato i tentativi massimi, operazione annullata");
                             return;
 
                         }
-                        
+
                         break;
                     }
 
@@ -86,7 +90,7 @@ public class App {
                     }
                 }
             }
-            
+
             if (!eventoCreato) {
 
                 System.out.println("hai superato i tentativi massimi, operazione annullata");
@@ -96,12 +100,15 @@ public class App {
 
             // faccio operazione di aggiunta o disdetta
             if (evento1 == null) {
-                
+
                 System.out.println("impossibile eseguire operazioni, evento non creato");
 
             } else {
 
+                // // Dopo che l’evento è stato istanziato, chiedere all’utente se e quante prenotazioni vuole fare e provare ad effettuarle, implementando opportuni controlli
                 evento1 = aggiungiPrenotazioni(scanner, evento1);
+
+                // // Provare ad effettuare le disdette, implementando opportuni controlli
                 evento1 = disdiciPrenotazione(scanner, evento1);
 
             }
@@ -113,10 +120,13 @@ public class App {
 
     }
 
+
+
     // metodo per creare evento
     public static Evento creaEvento(Scanner scanner, String utenteSceltaTipo) {
         boolean operazione = false;
 
+        // // in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
         // ciclo per verificare se i dati sono corretti e si puo creare evento generico
         while (!operazione) {
 
@@ -124,6 +134,7 @@ public class App {
 
                 String titoloEvento = null;
                 boolean titoloValido = false;
+
                 // chiedo titolo evento
                 for (int i = 0; i < MAX_TENTATIVI; i++) {
 
@@ -142,7 +153,7 @@ public class App {
                     }
                 }
                 if (!titoloValido) {
-                    
+
                     System.out.println(
                             "hai inserito titolo errato per un numero did tentativi massimi, annullo operazione");
                     return null;
@@ -206,7 +217,7 @@ public class App {
 
                 }
 
-                // creo evento generico o concerto a seconda se utente a seconda della scelta del utente
+                // creo evento generico o concerto a seconda della scelta del utente
                 switch (utenteSceltaTipo) {
 
                     case "1" -> {
@@ -218,6 +229,7 @@ public class App {
                     }
                     case "2" -> {
 
+                        // // Testare la classe Concerto, utilizzando TUTTI i suoi metodi.
                         // chiedo dati per il concerto
                         // chiedo prezzo evento
                         System.out.println("Inserisci il prezzo del Concerto:");
@@ -281,9 +293,9 @@ public class App {
                         return new Concerto(ora, prezzo, titoloEvento, data, numPostiTotali);
 
                     }
-                    
+
                     default -> {
-                        
+
                         System.err.println("hai inserito valori errati, riprova");
                         break;
                     }
@@ -292,7 +304,7 @@ public class App {
             } catch (IllegalArgumentException e) {
 
                 if (!isRipetiOperazione(scanner, e)) {
-                    
+
                     return null;
 
                 }
@@ -303,7 +315,11 @@ public class App {
 
     }
 
+
+
+
     // metodo per aggiungere prenotazioni
+    // Dopo che l’evento è stato istanziato, chiedere all’utente se e quante prenotazioni vuole fare e provare ad effettuarle, implementando opportuni controlli
     public static Evento aggiungiPrenotazioni(Scanner scanner, Evento evento) {
 
         // se evento non viene creato non prenoto nulla
@@ -316,21 +332,69 @@ public class App {
 
             try {
 
-                // chiedo utente quante prenotazioni vuole fare
-                System.out.println("quante prenotazioni devi fare?");
+                // // chiedere all’utente se
+                // chiedo utente se vuole prenotare delle prenotazioni
+                System.out.println(
+                        "vuoi prenotare delle prenotazioni? digita si/no");
+                String inputRisposta = scanner.nextLine();
+                boolean prenotare = evento.isVuoiFareOperazioni(inputRisposta);
 
-                int numPostiPrenotati = scanner.nextInt();
-                scanner.nextLine();
+                if (prenotare) {
 
-                // aggiungo il numero di prenotazioni
-                evento.prenota(numPostiPrenotati);
+                    // // e quante prenotazioni vuole fare
+                    // chiedo utente quante prenotazioni vuole fare
+                    System.out.println("quanti posti vuoi prenotare?\n #numero posti disponibili: " + evento.getNumPostiDisponibili());
+                    int numPostiPrenotare = scanner.nextInt();
+                    scanner.nextLine();
 
-                System.out.println("prenotazione effettuata");
+                    // // implementando opportuni controlli
+                    if (numPostiPrenotare <= 0) {
 
+                        System.out.println("il numero di posti da prenotare deve essere maggiore di 0");
+                        System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili()
+                                + " - numero posti totali: " + evento.getNumPostiTotale());
+                        return evento;
+
+                    }
+                    if (numPostiPrenotare > evento.getNumPostiDisponibili()) {
+
+                        System.out.println("stai cercando di prenotare più posti di quelli disponibili");
+                        System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili()
+                                + " - numero posti totali: " + evento.getNumPostiTotale());
+                        return evento;
+
+                    }
+                    if (numPostiPrenotare > evento.getNumPostiTotale()) {
+
+                        System.out.println("stai cercando di prenotare più posti di quelli totali");
+                        System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili()
+                                + " - numero posti totali: " + evento.getNumPostiTotale());
+                        return evento;
+
+                    }
+
+                    // // e provare ad effettuarle
+                    // prenoto i posti
+                    for (int i = 0; i < numPostiPrenotare; i++) {
+
+                        evento.prenota();
+
+                    }
+                    System.out.println("prenotazione effettuata, numero posti prenotati: " + numPostiPrenotare);
+
+                } else {
+
+                    System.out.println("non vuoi prenotare nessun posto");
+                    System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili()
+                            + " - numero posti totali: " + evento.getNumPostiTotale());
+                    return evento;
+
+                }
+
+                // // Stampare a video il numero di posti prenotati e quelli disponibili
                 // stampo numero posti totali prenotati e disponibili
-                System.out.println("numero di posti prenotati: " + evento.getNumPostiPrenotati()
+                System.out.println("numero di posti prenotati totali: " + evento.getNumPostiPrenotati()
                         + " ,numero posti disponibili: " + evento.getNumPostiDisponibili());
-
                 return evento;
 
             } catch (InputMismatchException e) {
@@ -350,6 +414,8 @@ public class App {
         }
     }
 
+
+
     // metodo per disdire delle prenotazioni
     public static Evento disdiciPrenotazione(Scanner scanner, Evento evento) {
 
@@ -363,29 +429,55 @@ public class App {
 
             try {
 
+                // // Chiedere all’utente se
                 // chiedo utente se vuole disdire delle prenotazioni
                 System.out.println(
                         "vuoi disdire delle prenotazioni? digita si/no");
                 String inputRisposta = scanner.nextLine();
-                boolean disdire = evento.isVuoiDisdire(inputRisposta);
+                boolean disdire = evento.isVuoiFareOperazioni(inputRisposta);
 
                 if (disdire) {
 
+                    // // e quanti posti vuole disdire
                     // chiedo utente quante prenotazioni vuole disdire
-                    System.out.println("quanti posti vuoi disdire?");
+                    System.out.println("quanti posti vuoi disdire?\n #numero posti prenotati: " + evento.getNumPostiPrenotati());
                     int numPostiDisdire = scanner.nextInt();
                     scanner.nextLine();
 
+                    // // implementando opportuni controlli
+                    if (numPostiDisdire <= 0) {
+
+                        System.out.println("il numero di posti da disdire deve essere maggiore di 0");
+                        System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili());
+                        return evento;
+
+                    }
+                    if (numPostiDisdire > evento.getNumPostiPrenotati()) {
+
+                        System.out.println("stai cercando di disdire più posti di quelli prenotati");
+                        System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili());
+                        return evento;
+
+                    }
+
+                    // // Provare ad effettuare le disdette
                     // disdico i posti
-                    evento.disdici(numPostiDisdire);
+                    for (int i = 0; i < numPostiDisdire; i++) {
+
+                        evento.disdici();
+
+                    }
+                    System.out.println("disdetta posti fatta, numero posti disdetti: " + numPostiDisdire);
 
                 } else {
 
                     System.out.println("non vuoi disdire nessun posto");
+                    System.out.println("numero di posti disponibili: " + evento.getNumPostiDisponibili());
                     return evento;
 
                 }
 
+                // // Stampare a video il numero di posti prenotati e quelli disponibili
                 // stampo numero posti totali prenotati e disponibili
                 System.out.println("numero di posti prenotati totali: " + evento.getNumPostiPrenotati()
                         + " ,numero posti disponibili: " + evento.getNumPostiDisponibili());
@@ -399,19 +491,19 @@ public class App {
 
             } catch (IllegalArgumentException e) {
 
-                System.out.println("errore: " + e.getMessage());
+                System.out.println("hai inserito dei valori errati, impossibile disdire dei posti, errore: " + e.getMessage());
                 System.out.println("esco dall'operazione");
                 return evento;
 
             }
         }
     }
-    
+
     // metodo per far ripetere operazione
     public static boolean isRipetiOperazione(Scanner scanner, Exception e) {
 
         System.out.println(
-                        "hai inserito dei valori errati, impossibile creare evento, errore: " + e.getMessage());
+                "hai inserito dei valori errati, impossibile creare evento, errore: " + e.getMessage());
 
         // ciclo per chiedere se vuole riprovare a creare evento
         for (int i = 0; i < MAX_TENTATIVI; i++) {
@@ -454,6 +546,9 @@ public class App {
         return false;
 
     }
+
 }
+
+
 
 
