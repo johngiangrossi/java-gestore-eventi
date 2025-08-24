@@ -78,10 +78,16 @@ public class Concerto extends Evento {
     
     // // Fare l’ override del metodo toString() in modo che venga restituita una stringa del tipo: data e ora formattata - titolo - prezzo formattato
     // override
+
     @Override
     public String toString() {
-        return "Concerto [data=" + super.getDataFormattata() + " ora=" + getOraFormattata() + ", titolo="
-                + super.getTitolo() + " prezzo=" + getPrezzoFormattato() + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Concerto{");
+        sb.append("data=").append(super.getDataFormattata());
+        sb.append(", ora=").append(getOraFormattata());
+        sb.append(", titolo=").append(super.getTitolo());
+        sb.append(", prezzo=").append(getPrezzoFormattato());
+        sb.append('}');
+        return sb.toString();
     }
-    
 }

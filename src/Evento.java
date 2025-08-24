@@ -2,7 +2,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Evento {
+public class Evento implements Comparable<Evento>{
 
     // // Creare una classe Evento che abbia le seguenti proprietà: titolo , data , numero di posti in totale , numero di posti prenotati
     // fields
@@ -169,15 +169,27 @@ public class Evento {
     }
     
 
-
     // // l’override del metodo toString() in modo che venga restituita una stringa contenente: data formattata - titolo
     // override
     @Override
     public String toString() {
-
-        return "Evento [data=" + getDataFormattata() + " - titolo=" + getTitolo() + "]";
-
+        StringBuilder sb = new StringBuilder();
+        sb.append("Evento{");
+        sb.append("data=").append(getDataFormattata());
+        sb.append(", titolo=").append(getTitolo());
+        sb.append('}');
+        return sb.toString();
     }
-
-
+    
+    
+    // metodo per comparare
+    @Override
+    public int compareTo(Evento o) {
+        int confrontoData = this.getDataFormattata().compareTo(o.getDataFormattata());
+        if (confrontoData != 0) {
+            return confrontoData;
+        }
+        return this.getTitolo().compareTo(o.getTitolo());
+    }
+    
 }
