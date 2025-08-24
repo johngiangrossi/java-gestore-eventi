@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class App {
 
     private static final int MAX_TENTATIVI = 3;
-    
+
     // // Creare una classe Main di test, in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
     public static void main(String[] args) {
 
@@ -18,8 +18,39 @@ public class App {
         // in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
         
         try {
+
+            // chiedo titolo programma eventi
+            String inputProgrammaEventi = null;
+            boolean titoloProgrammaValido = false;          
             
-            Evento evento1 = gestisciCreazioneEVento(scanner);
+            for (int i = 0; i < MAX_TENTATIVI; i++) {
+                
+                System.out.println("inserisci il titolo del programma eventi");
+                inputProgrammaEventi = scanner.nextLine();
+                
+                if (inputProgrammaEventi == null || inputProgrammaEventi.isBlank()) {
+                    
+                    System.out.println("hai inserito un titolo non valido (vuoto), riprova");
+                    
+                } else {
+                    
+                    titoloProgrammaValido = true;
+                    break;
+                    
+                }
+            }
+            if (!titoloProgrammaValido) {
+                
+                System.out.println(
+                    "hai inserito titolo errato per un numero did tentativi massimi, annullo operazione");
+                return;
+
+            }
+            
+            ProgrammaEventi programmaEventi1 = new ProgrammaEventi(inputProgrammaEventi);
+
+            // creo evento
+            Evento evento1 = gestisciCreazioneEvento(scanner);
 
             // faccio operazione di aggiunta o disdetta
             if (evento1 == null) {
@@ -34,21 +65,19 @@ public class App {
                 // // Provare ad effettuare le disdette, implementando opportuni controlli
                 evento1 = disdiciPrenotazione(scanner, evento1);
 
+                // aggiungo evento alla lista
+                programmaEventi1.aggiungiEvento(evento1);
+    
+                // stampo la lista
+                System.out.println(programmaEventi1.getEventiLista());
+    
+                // mostro lunghezza lista
+                System.out.println(programmaEventi1.numeroEventiLista());
             }
-            
-            // aggiungo evento alla lista
-            ProgrammaEventi programmaEventi1 = new ProgrammaEventi("concerti");
-    
-            programmaEventi1.aggiungiEvento(evento1);
-    
-            // stampo la lista
-            System.out.println(programmaEventi1.getEventiLista());
 
-            // mostro lunghezza lista
-            System.out.println(programmaEventi1.numeroEventiLista());
 
             // aggiungo e stampo un altro evento
-            Evento evento2 = gestisciCreazioneEVento(scanner);
+            Evento evento2 = gestisciCreazioneEvento(scanner);
 
             if (evento2 == null) {
 
@@ -60,15 +89,19 @@ public class App {
 
                 evento2 = disdiciPrenotazione(scanner, evento2);
 
+                programmaEventi1.aggiungiEvento(evento2);
             }
-                
-            programmaEventi1.aggiungiEvento(evento2);
-    
+
+
             System.out.println("la lista degli eventi è: " + programmaEventi1.getEventiLista());
 
             System.out.println("nella lista ci sono: " + programmaEventi1.numeroEventiLista() + " eventi");
 
             System.out.println(programmaEventi1.stringaOrdinaLista());
+
+        } catch (NullPointerException e) {
+
+            System.out.println("eventi da confrontare non sono stati creati");
 
         } finally {
 
@@ -79,7 +112,7 @@ public class App {
 
     
     // metodo per gestire la creazione del evento
-    public static Evento gestisciCreazioneEVento(Scanner scanner) {
+    public static Evento gestisciCreazioneEvento(Scanner scanner) {
 
         // in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.                 
         // faccio scegliere se vuole creare evento
@@ -177,7 +210,7 @@ public class App {
                     System.out.println(
                             "hai inserito titolo errato per un numero did tentativi massimi, annullo operazione");
                             return null;
-                        }
+                }
 
                 // chiedo data evento
                 boolean dataValida = false;
