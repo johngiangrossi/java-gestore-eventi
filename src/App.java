@@ -56,24 +56,24 @@ public class App {
             if (evento1 == null) {
 
                 System.out.println("impossibile eseguire operazioni, evento non creato");
+                return;
 
-            } else {
+            } 
 
-                // // Dopo che l’evento è stato istanziato, chiedere all’utente se e quante prenotazioni vuole fare e provare ad effettuarle, implementando opportuni controlli
-                evento1 = aggiungiPrenotazioni(scanner, evento1);
+            // // Dopo che l’evento è stato istanziato, chiedere all’utente se e quante prenotazioni vuole fare e provare ad effettuarle, implementando opportuni controlli
+            evento1 = aggiungiPrenotazioni(scanner, evento1);
 
-                // // Provare ad effettuare le disdette, implementando opportuni controlli
-                evento1 = disdiciPrenotazione(scanner, evento1);
+            // // Provare ad effettuare le disdette, implementando opportuni controlli
+            evento1 = disdiciPrenotazione(scanner, evento1);
 
-                // aggiungo evento alla lista
-                programmaEventi1.aggiungiEvento(evento1);
-    
-                // stampo la lista
-                System.out.println(programmaEventi1.getEventiLista());
-    
-                // mostro lunghezza lista
-                System.out.println(programmaEventi1.numeroEventiLista());
-            }
+            // aggiungo evento alla lista
+            programmaEventi1.aggiungiEvento(evento1);
+
+            // stampo la lista
+            System.out.println("la lista degli eventi è: " + programmaEventi1.getEventiLista());
+
+            // mostro lunghezza lista
+            System.out.println("nella lista ci sono: " + programmaEventi1.numeroEventiLista() + " eventi");
 
 
             // aggiungo e stampo un altro evento
@@ -82,15 +82,15 @@ public class App {
             if (evento2 == null) {
 
                 System.out.println("impossibile eseguire operazioni, evento non creato");
+                return;
 
-            } else {
+            } 
 
-                evento2 = aggiungiPrenotazioni(scanner, evento2);
+            evento2 = aggiungiPrenotazioni(scanner, evento2);
 
-                evento2 = disdiciPrenotazione(scanner, evento2);
+            evento2 = disdiciPrenotazione(scanner, evento2);
 
-                programmaEventi1.aggiungiEvento(evento2);
-            }
+            programmaEventi1.aggiungiEvento(evento2);
 
 
             System.out.println("la lista degli eventi è: " + programmaEventi1.getEventiLista());
@@ -101,7 +101,7 @@ public class App {
 
         } catch (NullPointerException e) {
 
-            System.out.println("eventi da confrontare non sono stati creati");
+            System.out.println("uno o più elementi da confrontare non sono stati creati (null)");
 
         } finally {
 
