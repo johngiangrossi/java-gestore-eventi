@@ -53,9 +53,8 @@ public class App {
             Evento evento1 = gestisciCreazioneEvento(scanner);
 
             // faccio operazione di aggiunta o disdetta
-            if (evento1 == null) {
+            if (isCreatoEvento(evento1)) {
 
-                System.out.println("impossibile eseguire operazioni, evento non creato");
                 return;
 
             } 
@@ -79,9 +78,8 @@ public class App {
             // aggiungo e stampo un altro evento
             Evento evento2 = gestisciCreazioneEvento(scanner);
 
-            if (evento2 == null) {
+            if (isCreatoEvento(evento2)){
 
-                System.out.println("impossibile eseguire operazioni, evento non creato");
                 return;
 
             } 
@@ -594,4 +592,13 @@ public class App {
     }
     
 
+    public static boolean isCreatoEvento(Evento evento) {
+            if (evento == null) {
+
+                System.out.println("impossibile eseguire operazioni, evento non creato");
+                return true;
+
+            }
+            return false; 
+    }
 }
