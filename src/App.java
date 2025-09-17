@@ -175,189 +175,185 @@ public class App {
     
     // metodo per creare evento
     public static Evento creaEvento(Scanner scanner, String utenteSceltaTipo) {
-        boolean operazione = false;
         
         // // in cui si chiede all’utente di inserire un nuovo evento con tutti i parametri.
         // ciclo per verificare se i dati sono corretti e si puo creare evento generico
-
+        while (true) {
             
-        try {
+            try {
 
-            String titoloEvento = null;
-            boolean titoloValido = false;
-            
-            // chiedo titolo evento
-            for (int i = 0; i < MAX_TENTATIVI; i++) {
+                String titoloEvento = null;
+                boolean titoloValido = false;
                 
-                System.out.println("inserisci il titolo dell'evento");
-                titoloEvento = scanner.nextLine();
-                
-                if (titoloEvento == null || titoloEvento.isBlank()) {
+                // chiedo titolo evento
+                for (int i = 0; i < MAX_TENTATIVI; i++) {
                     
-                    System.out.println("hai inserito un titolo non valido, riprova");
+                    System.out.println("inserisci il titolo dell'evento");
+                    titoloEvento = scanner.nextLine();
+                    
+                    if (titoloEvento == null || titoloEvento.isBlank()) {
+                        
+                        System.out.println("hai inserito un titolo non valido, riprova");
 
-                } else {
-                    
-                    titoloValido = true;
-                    break;
-                    
+                    } else {
+                        
+                        titoloValido = true;
+                        break;
+                        
+                    }
                 }
-            }
-            if (!titoloValido) {
-                
-                System.out.println(
-                        "hai inserito titolo errato per un numero did tentativi massimi, annullo operazione");
-                        return null;
-            }
-
-            // chiedo data evento
-            boolean dataValida = false;
-            LocalDate data = null;
-            
-            for (int i = 0; i < MAX_TENTATIVI; i++) {
-
-                System.out.println("inserisci la data dell'evento (formato AAAA-MM-GG)");
-                String dataEventoString = scanner.nextLine();
-
-                try {
+                if (!titoloValido) {
                     
-                    data = LocalDate.parse(dataEventoString);
-                    dataValida = true;
-                    break;
-                    
-                } catch (DateTimeParseException e) {
-                    
-                    System.out.println("hai inserito una data in un formato non corretto (formato AAAA-MM-GG)");
-                    
+                    System.out.println(
+                            "hai inserito titolo errato per un numero did tentativi massimi, annullo operazione");
+                            return null;
                 }
-            }
-            
-            if (!dataValida) {
-                System.out.println(
-                        "hai inserito la data in formato errato, annullo operazione di creazione evento");
-                return null;
-            }
-            
-            // chiedo numero posti totali
-            int numPostiTotali = 0;
-            boolean numeroValido = false;
-            for (int i = 0; i < MAX_TENTATIVI; i++) {
+
+                // chiedo data evento
+                boolean dataValida = false;
+                LocalDate data = null;
                 
-                System.out.println("inserisci il numero di posti totali");
-                try {
-                    
-                    int inputPostiTotali = scanner.nextInt();
-                    scanner.nextLine();
-                    numPostiTotali = inputPostiTotali;
-                    numeroValido = true;
-                    break;
-                    
-                } catch (InputMismatchException e) {
-                    
-                    System.out.println("hai inserito dei valori non corretti");
-                    scanner.nextLine();
-                    
+                for (int i = 0; i < MAX_TENTATIVI; i++) {
+
+                    System.out.println("inserisci la data dell'evento (formato AAAA-MM-GG)");
+                    String dataEventoString = scanner.nextLine();
+
+                    try {
+                        
+                        data = LocalDate.parse(dataEventoString);
+                        dataValida = true;
+                        break;
+                        
+                    } catch (DateTimeParseException e) {
+                        
+                        System.out.println("hai inserito una data in un formato non corretto (formato AAAA-MM-GG)");
+                        
+                    }
                 }
-            }
-            
-            if (!numeroValido) {
                 
-                System.out.println(
-                        "hai inserito un numero totale di posti errato, annullo operazione di creazione evento");
-                return null;
-
-            }
-            
-            // creo evento generico o concerto a seconda della scelta del utente
-            switch (utenteSceltaTipo) {
-
-                case "1" -> {
-
-                    // creo evento generico
-                    System.out.println("evento generico creato");
-                    return new Evento(titoloEvento, data, numPostiTotali);
-                    
+                if (!dataValida) {
+                    System.out.println(
+                            "hai inserito la data in formato errato, annullo operazione di creazione evento");
+                    return null;
                 }
-                case "2" -> {
+                
+                // chiedo numero posti totali
+                int numPostiTotali = 0;
+                boolean numeroValido = false;
+                for (int i = 0; i < MAX_TENTATIVI; i++) {
                     
-                    // // Testare la classe Concerto, utilizzando TUTTI i suoi metodi.
-                    // chiedo dati per il concerto
-                    // chiedo prezzo evento
-                    System.out.println("Inserisci il prezzo del Concerto:");
-                    BigDecimal prezzo = null;
-                    boolean prezzoValido = false;
+                    System.out.println("inserisci il numero di posti totali");
+                    try {
+                        
+                        int inputPostiTotali = scanner.nextInt();
+                        scanner.nextLine();
+                        numPostiTotali = inputPostiTotali;
+                        numeroValido = true;
+                        break;
+                        
+                    } catch (InputMismatchException e) {
+                        
+                        System.out.println("hai inserito dei valori non corretti");
+                        scanner.nextLine();
+                        
+                    }
+                }
+                
+                if (!numeroValido) {
                     
-                    for (int i = 0; i < MAX_TENTATIVI; i++) {
+                    System.out.println(
+                            "hai inserito un numero totale di posti errato, annullo operazione di creazione evento");
+                    return null;
 
-                        try {
+                }
+                
+                // creo evento generico o concerto a seconda della scelta del utente
+                switch (utenteSceltaTipo) {
+
+                    case "1" -> {
+
+                        // creo evento generico
+                        System.out.println("evento generico creato");
+                        return new Evento(titoloEvento, data, numPostiTotali);
+                        
+                    }
+                    case "2" -> {
+                        
+                        // // Testare la classe Concerto, utilizzando TUTTI i suoi metodi.
+                        // chiedo dati per il concerto
+                        // chiedo prezzo evento
+                        System.out.println("Inserisci il prezzo del Concerto:");
+                        BigDecimal prezzo = null;
+                        boolean prezzoValido = false;
+                        
+                        for (int i = 0; i < MAX_TENTATIVI; i++) {
+
+                            try {
+                                
+                                prezzo = scanner.nextBigDecimal();
+                                scanner.nextLine();
+                                prezzoValido = true;
+                                break;
+
+                            } catch (InputMismatchException e) {
+
+                                System.out.println("Hai inserito un valore non valido per il prezzo, riprova");
+                                scanner.nextLine();
+                                
+                            }
+                        }
+                        
+                        if (!prezzoValido) {
                             
-                            prezzo = scanner.nextBigDecimal();
-                            scanner.nextLine();
-                            prezzoValido = true;
-                            break;
-
-                        } catch (InputMismatchException e) {
-
-                            System.out.println("Hai inserito un valore non valido per il prezzo, riprova");
-                            scanner.nextLine();
+                            System.out.println("hai inserito il prezzo non valido, termino operazione");
+                            return null;
                             
                         }
-                    }
-                    
-                    if (!prezzoValido) {
                         
-                        System.out.println("hai inserito il prezzo non valido, termino operazione");
-                        return null;
+                        // chiedo ora evento
+                        boolean oraValida = false;
+                        LocalTime ora = null;
                         
-                    }
-                    
-                    // chiedo ora evento
-                    boolean oraValida = false;
-                    LocalTime ora = null;
-                    
-                    for (int i = 0; i < MAX_TENTATIVI; i++) {
-                        
-                        System.out.println("inserisci la ora dell'evento (formato HH:mm)");
-                        String oraEventoString = scanner.nextLine();
+                        for (int i = 0; i < MAX_TENTATIVI; i++) {
+                            
+                            System.out.println("inserisci la ora dell'evento (formato HH:mm)");
+                            String oraEventoString = scanner.nextLine();
 
-                        try {
+                            try {
 
-                            ora = LocalTime.parse(oraEventoString);
-                            oraValida = true;
-                            break;
-                            
-                        } catch (DateTimeParseException e) {
-                            
-                            System.out.println("hai inserito una ora in un formato non corretto (formato HH:mm)");
-                            
+                                ora = LocalTime.parse(oraEventoString);
+                                oraValida = true;
+                                break;
+                                
+                            } catch (DateTimeParseException e) {
+                                
+                                System.out.println("hai inserito una ora in un formato non corretto (formato HH:mm)");
+                                
+                            }
                         }
-                    }
-                    
-                    if (!oraValida) {
-                        System.out.println(
-                                "hai inserito l'ora in formato errato, annullo operazione di creazione concerto");
-                        return null;
-                    }
-                    
-                    // creo concerto
-                    System.out.println("concerto creato");
-                    return new Concerto(ora, prezzo, titoloEvento, data, numPostiTotali);
+                        
+                        if (!oraValida) {
+                            System.out.println(
+                                    "hai inserito l'ora in formato errato, annullo operazione di creazione concerto");
+                            return null;
+                        }
+                        
+                        // creo concerto
+                        System.out.println("concerto creato");
+                        return new Concerto(ora, prezzo, titoloEvento, data, numPostiTotali);
 
+                    }
+                }
+                
+            } catch (IllegalArgumentException e) {
+
+                if (!isRipetiOperazione(scanner, e)) {
+                    
+                    return null;
+                    
                 }
             }
-            
-        } catch (IllegalArgumentException e) {
-
-            if (!isRipetiOperazione(scanner, e)) {
-                
-                return null;
-                
-            }
-        }
-        
-
-        return null;
-        
+        }        
     }
     
     
